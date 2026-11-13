@@ -1,0 +1,42 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local environment configuration
+.env
+.env.*
+.claude/settings.local.json
+
+# Temporary files
+*.tmp
+*.log
+*~
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Generated model binaries (unless explicitly approved)
+*.pkl
+*.joblib
+*.pickle
+*.h5
+*.onnx
+
+# Regenerable processed datasets
+data/processed/
+data/interim/
+
+# Assessment/milestone PDF reports must stay outside the repo
+reports/
