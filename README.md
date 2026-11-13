@@ -36,7 +36,8 @@ telecom-churn-prediction/
 ├── docs/
 │   ├── Final_Project_Proposal.pdf
 │   └── requirements_traceability.md
-├── notebooks/                 the single primary analysis notebook (to be created)
+├── notebooks/
+│   └── telecom_churn_analysis.ipynb   the single primary analysis notebook
 └── results/                   saved tables and figures
 ```
 
@@ -61,11 +62,21 @@ Open the notebook in `notebooks/` and select the "Python 3.12 (telecom-churn)" k
 | Milestone | Scope | Status |
 |---|---|---|
 | 0A | Discovery, proposal review, planning | Complete |
-| 0B | Repository and environment setup, guardrails | Complete (pending review) |
-| 1 | Data integrity checks, stratified split, training-set exploration | Not started |
+| 0B | Repository and environment setup, guardrails | Complete |
+| 1 | Data integrity checks, stratified split, training-set exploration | Complete (pending review) |
 | 2 | Pipelines, baseline, cross-validation of four models | Not started |
 | 3 | Model selection and threshold selection | Not started |
 | 4 | Final test evaluation, ranking precision, permutation importance | Not started |
 | 5 | Notebook finalization and documentation | Not started |
 
-No modeling or evaluation has been performed yet.
+Milestone 1 is implemented in `notebooks/telecom_churn_analysis.ipynb` (data integrity, stratified 75/25 split
+with seed 42, and training-set-only EDA). The notebook is the primary source for detailed findings. No modeling
+or evaluation has been performed yet.
+
+## Running the notebook
+The notebook needs only `data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv` (unmodified) and the pinned environment.
+It locates the project root automatically, so it can be launched from the project root or from `notebooks/`.
+```powershell
+.\.venv\Scripts\python.exe -m jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=telecom-churn notebooks/telecom_churn_analysis.ipynb
+```
+Or open it in `jupyter lab` and choose Run All with the "Python 3.12 (telecom-churn)" kernel.

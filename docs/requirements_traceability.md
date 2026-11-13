@@ -7,12 +7,12 @@ Source: `docs/Final_Project_Proposal.pdf` (page references are to the proposal P
 
 | ID | Requirement | Proposal ref | Milestone | Expected deliverable | Verification method | Status |
 |---|---|---|---|---|---|---|
-| R1 | Use the Kaggle Telco CSV (7,043 rows, 21 columns) as the sole analytical dataset; do not combine with IBM data | p.2 Dataset | 1 | Notebook loads the raw CSV unmodified | Shape check; raw file hash unchanged | Pending (file present, loads as 7,043 x 21) |
-| R2 | Check duplicates, missing values, class proportions | p.2 Dataset | 1 | Data-integrity section | Printed counts in executed cells | Pending |
-| R3 | Exclude `customerID`; convert blank `TotalCharges` to missing | p.3 Methodology | 1 | Preprocessing code and documented handling | Assertions on columns and NaN count | Pending |
-| R4 | Review predictors for outcome leakage | p.3 | 1 | Feature-review notes | Written justification per questionable feature | Pending |
-| R5 | Stratified 25% test set, fixed seed (42), created once | p.3 | 1 | Single split cell | Class ratio and sizes in train/test; seed recorded | Pending |
-| R6 | Explore distributions/relationships with churn on training data only | p.3 | 1 | Training-set EDA section and figures | No test rows used in EDA code | Pending |
+| R1 | Use the Kaggle Telco CSV (7,043 rows, 21 columns) as the sole analytical dataset; do not combine with IBM data | p.2 Dataset | 1 | Notebook loads the raw CSV unmodified | Shape check; raw file hash unchanged | Complete (Milestone 1: loads as 7,043 x 21; SHA-256 recorded and re-checked in notebook) |
+| R2 | Check duplicates, missing values, class proportions | p.2 Dataset | 1 | Data-integrity section | Printed counts in executed cells | Complete (Milestone 1: 11 blank `TotalCharges`, 22 near-duplicates, 0 other missing, 26.54% churn) |
+| R3 | Exclude `customerID`; convert blank `TotalCharges` to missing | p.3 Methodology | 1 | Preprocessing code and documented handling | Assertions on columns and NaN count | Partial (Milestone 1: blanks -> NaN verified, `customerID` identified as excluded; exclusion enforced in Milestone 2 pipelines) |
+| R4 | Review predictors for outcome leakage | p.3 | 1 | Feature-review notes | Written justification per questionable feature | Complete (Milestone 1: feature-review table in notebook; no leakage found, redundancies noted) |
+| R5 | Stratified 25% test set, fixed seed (42), created once | p.3 | 1 | Single split cell | Class ratio and sizes in train/test; seed recorded | Complete (Milestone 1: 5,282 / 1,761; 26.54% / 26.52% churn; no overlap; deterministic) |
+| R6 | Explore distributions/relationships with churn on training data only | p.3 | 1 | Training-set EDA section and figures | No test rows used in EDA code | Complete (Milestone 1: EDA uses `train_df` only; `test_df` referenced only in split cells) |
 | R7 | Pipelines fit imputation, one-hot encoding, scaling (logistic regression) within each training fold | p.3 | 2 | `Pipeline`/`ColumnTransformer` objects | Code review; transformers only inside pipelines | Pending |
 | R8 | Majority-class dummy baseline | p.1, p.3 | 2 | Baseline CV and test metrics | Baseline row in results table | Pending |
 | R9 | Compare Logistic Regression, Decision Tree, Random Forest, Gradient Boosting on same splits | p.1 Obj. 2 | 2 | Comparison table | All four models share identical folds | Pending |
@@ -27,6 +27,6 @@ Source: `docs/Final_Project_Proposal.pdf` (page references are to the proposal P
 | R18 | Repeated permutation importance on original columns (drop in test ROC-AUC); five leading predictors; report variability; note correlated features | p.1 Obj. 3, p.3 | 4 | Importance table and plot | Repeats and std reported; applied to the frozen model | Pending |
 | R19 | Interpret importance as association, not cause | p.3 | 4–5 | Discussion text | Text review | Pending |
 | R20 | Retrospective framing; no claims of advance prediction, retention impact, or deployment performance; note missing usage/complaint/timestamp data | p.1–3 | 5 | Limitations section | Text review against proposal | Pending |
-| R21 | One reproducible Jupyter notebook as the primary deliverable | p.3 Expected Outcomes | 5 | Single notebook in `notebooks/` | Restart-and-run-all completes | Pending |
+| R21 | One reproducible Jupyter notebook as the primary deliverable | p.3 Expected Outcomes | 5 | Single notebook in `notebooks/` | Restart-and-run-all completes | Pending (Milestone 1 sections execute end to end; notebook continues in later milestones) |
 | R22 | Reproducible environment | CLAUDE.md | 0B | `.venv`, pinned `requirements.txt` | Imports and recreation test | Complete (see Milestone 0B report) |
 | R23 | Guardrails documented | CLAUDE.md | 0B | `CLAUDE.md` | File review | Complete |
