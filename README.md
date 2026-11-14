@@ -63,15 +63,28 @@ Open the notebook in `notebooks/` and select the "Python 3.12 (telecom-churn)" k
 |---|---|---|
 | 0A | Discovery, proposal review, planning | Complete |
 | 0B | Repository and environment setup, guardrails | Complete |
-| 1 | Data integrity checks, stratified split, training-set exploration | Complete (pending review) |
-| 2 | Pipelines, baseline, cross-validation of four models | Not started |
+| 1 | Data integrity checks, stratified split, training-set exploration | Complete |
+| 2 | Pipelines, baseline, cross-validation of four models | Complete (pending review) |
 | 3 | Model selection and threshold selection | Not started |
 | 4 | Final test evaluation, ranking precision, permutation importance | Not started |
 | 5 | Notebook finalization and documentation | Not started |
 
-Milestone 1 is implemented in `notebooks/telecom_churn_analysis.ipynb` (data integrity, stratified 75/25 split
-with seed 42, and training-set-only EDA). The notebook is the primary source for detailed findings. No modeling
-or evaluation has been performed yet.
+Milestones 1 and 2 are implemented in `notebooks/telecom_churn_analysis.ipynb`, which is the primary source for
+detailed findings and metric tables.
+
+**Milestone 1 (Sections 1-10):** data integrity, stratified 75/25 split with seed 42, training-set-only EDA.
+
+**Milestone 2 (Sections 11-19):** leakage-safe preprocessing and baseline comparison.
+- One scikit-learn `ColumnTransformer` inside every `Pipeline`: median imputation + standard scaling for
+  `tenure`, `MonthlyCharges`, `TotalCharges`; one-hot encoding (unknown-safe, all levels kept) for `SeniorCitizen`
+  and the 15 categorical columns; `customerID` excluded.
+- Five models, untuned initial settings: majority-class Dummy, Logistic Regression, Decision Tree, Random Forest,
+  Gradient Boosting (`HistGradientBoostingClassifier`).
+- Evaluation: `StratifiedKFold(5, shuffle=True, random_state=42)` on the 75% training set only, with identical folds
+  for every model; the pipeline is re-fitted inside each fold. Churn-class precision, recall, F1, ROC-AUC (from
+  probabilities) and accuracy at the default 0.5 threshold; ranked by mean F1, ROC-AUC as tie-break.
+- Results are training-set cross-validation results, not test performance. The test set is untouched, and no tuning
+  or threshold optimization has been done (Milestone 3).
 
 ## Running the notebook
 The notebook needs only `data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv` (unmodified) and the pinned environment.
