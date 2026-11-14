@@ -64,12 +64,12 @@ Open the notebook in `notebooks/` and select the "Python 3.12 (telecom-churn)" k
 | 0A | Discovery, proposal review, planning | Complete |
 | 0B | Repository and environment setup, guardrails | Complete |
 | 1 | Data integrity checks, stratified split, training-set exploration | Complete |
-| 2 | Pipelines, baseline, cross-validation of four models | Complete (pending review) |
-| 3 | Model selection and threshold selection | Not started |
+| 2 | Pipelines, baseline, cross-validation of four models | Complete |
+| 3 | Tuning, model selection and threshold selection | Complete (pending review) |
 | 4 | Final test evaluation, ranking precision, permutation importance | Not started |
 | 5 | Notebook finalization and documentation | Not started |
 
-Milestones 1 and 2 are implemented in `notebooks/telecom_churn_analysis.ipynb`, which is the primary source for
+Milestones 1-3 are implemented in `notebooks/telecom_churn_analysis.ipynb`, which is the primary source for
 detailed findings and metric tables.
 
 **Milestone 1 (Sections 1-10):** data integrity, stratified 75/25 split with seed 42, training-set-only EDA.
@@ -83,8 +83,21 @@ detailed findings and metric tables.
 - Evaluation: `StratifiedKFold(5, shuffle=True, random_state=42)` on the 75% training set only, with identical folds
   for every model; the pipeline is re-fitted inside each fold. Churn-class precision, recall, F1, ROC-AUC (from
   probabilities) and accuracy at the default 0.5 threshold; ranked by mean F1, ROC-AUC as tie-break.
-- Results are training-set cross-validation results, not test performance. The test set is untouched, and no tuning
-  or threshold optimization has been done (Milestone 3).
+- Milestone 2 results are training-set cross-validation results at the default 0.5 threshold, not test performance.
+
+**Milestone 3 (Sections 20-32):** controlled tuning, selection and threshold choice, all on the training set.
+- `GridSearchCV` over small grids (46 configurations in total) for the four models on the same five folds, with
+  `class_weight` (None vs balanced) searched for each. Per-algorithm winner: highest mean CV F1, ROC-AUC as tie-break
+  (documented tolerance 0.001 F1).
+- Baseline (Milestone 2) versus tuned comparison; class weighting improved F1 for all four models.
+- Selection by the approved rule: **Random Forest** (`class_weight="balanced"`, `max_depth=20`, `min_samples_leaf=5`,
+  300 trees). The top three tuned models are very close (within about 0.003 F1), so the choice is provisional evidence
+  only and is discussed as such in the notebook.
+- Threshold: chosen from out-of-fold training probabilities by maximizing F1 over 0.05-0.95 (step 0.01), giving 0.44.
+  This is a training-only selection result, not an independent estimate; F1-optimal is not necessarily
+  cost-optimal for retention outreach.
+- The model, hyperparameters, threshold, features, split and protocol are frozen in the notebook (Section 29). The
+  test set remains untouched and no test metrics exist.
 
 ## Running the notebook
 The notebook needs only `data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv` (unmodified) and the pinned environment.
